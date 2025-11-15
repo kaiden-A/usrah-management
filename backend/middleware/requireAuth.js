@@ -14,7 +14,7 @@ export default async function requireAuth(req , res , next){
             return res.status(404).json({error : true , cookies : false})
         }
 
-        const [rows]= await db.query(`SELECT members_id , usrah_id FROM NUQABA WHERE naqib_id = ? ` ,
+        const [rows]= await db.query(`SELECT naqib_id , usrah_id FROM NUQABA WHERE naqib_id = ? ` ,
             [decodedToken.id]
         )
 

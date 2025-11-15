@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import connectDb from './database/database.js';
 import authRoutes from './routes/authRoutes.js';
 import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+
 
 dotenv.config();
 
@@ -10,7 +12,8 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 app.use(express.json());
-app.use(morgan('dev'))
+app.use(morgan('dev'));
+app.use(cookieParser());
 
 const db = await connectDb();
 app.locals.db = db;
