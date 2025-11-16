@@ -296,6 +296,16 @@ input:checked + .slider:before {
     display: block;
 }
 
+
+footer {
+    background-color: white;
+    padding: 1.5rem 0;
+    text-align: center;
+    color: #666;
+    border-top: 1px solid #eee;
+    margin-top: auto;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .header-content {

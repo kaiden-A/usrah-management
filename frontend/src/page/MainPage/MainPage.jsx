@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import Dashboard from "./components/Dashboard";
 import Members from "./components/Members";
 import Attendance from "./components/Attendance";
+import Footer from "../Global/Footer";
 
 
 function MainPage(){
@@ -21,6 +22,7 @@ function MainPage(){
                 {tab === 'Members' && <Members/>}
                 {tab === 'Attendance' && <Attendance/>}
             </main>
+            <Footer/>
         </>
     )
 
