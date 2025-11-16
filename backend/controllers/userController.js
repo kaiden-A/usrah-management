@@ -29,7 +29,8 @@ export const get_dashboard = async (req , res) => {
         const [rowsDashboard] = await db.query(
 
             `
-                SELECT m.members_id , m.members_name , COUNT(s.sessions_id) AS present,
+                SELECT DATE_FORMAT(s.session_date, '%d %b %Y') AS sessions_date  , 
+                    s.session_name ,  COUNT(s.sessions_id) AS present,
                 (
                     ABS(COUNT(s.sessions_id) - (SELECT COUNT(*) FROM SESSIONS WHERE USRAH_ID = ? ))
 
@@ -38,7 +39,7 @@ export const get_dashboard = async (req , res) => {
                     COUNT(s.sessions_id) /( SELECT COUNT(*) FROM SESSIONS WHERE USRAH_ID = ?) 
                 ) * 100 AS percentage_rate FROM members m 
                 JOIN attendance a ON m.members_id = a.members_id JOIN sessions s ON s.sessions_id = a.sessions_id
-                GROUP BY m.members_id ,  m.members_name;
+                GROUP BY s.session_date , s.session_name;
             `,
             [naqib.usrah_id , naqib.usrah_id]
         )
