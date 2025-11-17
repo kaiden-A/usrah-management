@@ -152,3 +152,45 @@ export const sign_attendence = (req , res) => {
         console.log(err);
     }
 }
+
+export const get_attendance = async (req , res) => {
+
+
+    const naqib = req.user;
+    const db = req.app.locals.db;
+
+    try{
+
+        const [sessionRow] = await db.query(
+            `SELECT sessions_id , session_name FROM SESSIONS
+            WHERE usrah_id = ?`,
+            [naqib.usrah_id]
+        )
+
+        const [attendRow] = await db.query(
+            `
+                SELECT 
+                    m.members_id,
+                    m.members_name,
+                    s.sessions_id,
+                    s.session_name,
+                    a.members_id AS attended
+                FROM members m
+                JOIN sessions s 
+                    ON s.usrah_id = ?
+                LEFT JOIN attendance a 
+                    ON a.members_id = m.members_id
+                    AND a.sessions_id = s.sessions_id
+                WHERE m.usrah_id = ?
+                ORDER BY m.members_id, s.sessions_id;
+            `,
+            [naqib.usrah_id , naqib.usrah_id]
+        )
+
+        res.json({sessions : sessionRow || [], attendance : attendRow || []})
+        
+
+    }catch(err){
+        console.log(err);
+    }
+}

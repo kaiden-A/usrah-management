@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { 
     create_sessions, 
+    get_attendance, 
     get_dashboard, 
     get_members, 
     post_members, 
@@ -18,5 +19,6 @@ router.post('/members/:id' , post_members);
 router.post('/sessions' , create_sessions);
 
 router.post('/attendances' , sign_attendence);
+router.get('/attendances' , get_attendance);
 
 export default router;

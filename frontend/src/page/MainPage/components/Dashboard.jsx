@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
 import LoadingSpinner from "../../Global/LoadingSpinner";
 
+import exportExcel from   '../../../util/exportExcel.js'
+
 function Dashboard(){
 
     const [data , setData] = useState({})
@@ -35,6 +37,10 @@ function Dashboard(){
     if(loading){
         return <LoadingSpinner text="fetch data" size="medium"/>
     }
+    
+    const handleExport = () => {
+        exportExcel(data.membersData , "members-data.xlsx")
+    }
 
     return(
 
@@ -47,7 +53,7 @@ function Dashboard(){
             <div className="card">
                 <div className="card-header">
                     <h2 className="card-title">Recent Attendance</h2>
-                    <button className="btn btn-outline">
+                    <button className="btn btn-outline" onClick={() => handleExport()}>
                         <i className="fas fa-download"></i> Export Report
                     </button>
                 </div>
