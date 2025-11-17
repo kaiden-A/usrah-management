@@ -1,20 +1,57 @@
+import { useEffect, useState } from "react";
 import DashboardCard from "./DashboardCard";
+import LoadingSpinner from "../../Global/LoadingSpinner";
 
 function Dashboard(){
 
+    const [data , setData] = useState({})
+    const [loading , setLoading] = useState(true)
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            try{
+
+                const responses = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/dashboard` , {
+                    method : 'GET',
+                    credentials : 'include'         
+                })
+
+                const data = await responses.json();
+
+                setData(data);
+                setLoading(false);
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
+        fetchData();
+
+    } , [])
+
+    if(loading){
+        return <LoadingSpinner text="fetch data" size="medium"/>
+    }
+
     return(
 
-         <div id="dashboard" class="tab-content active">
+         <div id="dashboard" className="tab-content active">
 
-            <DashboardCard/>
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">Recent Attendance</h2>
-                    <button class="btn btn-outline">
-                        <i class="fas fa-download"></i> Export Report
+            <DashboardCard
+                members={data?.totalMembers}
+                sessions={data?.totalSessions}
+            />
+            <div className="card">
+                <div className="card-header">
+                    <h2 className="card-title">Recent Attendance</h2>
+                    <button className="btn btn-outline">
+                        <i className="fas fa-download"></i> Export Report
                     </button>
                 </div>
-                <div class="table-container">
+                <div className="table-container">
                     <table>
                         <thead>
                             <tr>
@@ -26,13 +63,24 @@ function Dashboard(){
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>15 Oct 2023</td>
-                                <td>Tafsir Session</td>
-                                <td>20</td>
-                                <td>4</td>
-                                <td>83%</td>
-                            </tr>
+
+                            {
+                                data.membersData.length > 0 ? (
+
+                                    data.membersData.map((member , i) => 
+                                        <tr key={i}>
+                                            <td>{member.sessions_date}</td>
+                                            <td>{member.session_name}</td>
+                                            <td>{member.present}</td>
+                                            <td>{member.absent}</td>
+                                            <td>{` ${member.percentage_rate}%`}</td>
+                                        </tr>
+                                    )
+
+                                ) : (
+                                    <p>No Data</p>
+                                )
+                            }
                         </tbody>
                     </table>
                 </div>

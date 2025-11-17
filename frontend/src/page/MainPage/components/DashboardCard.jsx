@@ -1,6 +1,6 @@
 
 
-function DashboardCard(){
+function DashboardCard({members , sessions}){
 
     return(
 
@@ -10,7 +10,7 @@ function DashboardCard(){
                     <i className="fas fa-users"></i>
                 </div>
                 <div className="stat-info">
-                    <h3>24</h3>
+                    <h3>{members}</h3>
                     <p>Total Members</p>
                 </div>
             </div>
@@ -28,8 +28,8 @@ function DashboardCard(){
                     <i className="fas fa-calendar-alt"></i>
                 </div>
                 <div className="stat-info">
-                    <h3>12</h3>
-                    <p>Usrah Sessions This Month</p>
+                    <h3>{sessions}</h3>
+                    <p>Usrah Sessions This Sem</p>
                 </div>
             </div>
             <div className="stat-card">

@@ -1,0 +1,50 @@
+.loading-container {
+  position: fixed;        /* stay in place no matter scrolling */
+  top: 0;
+  left: 0;
+  width: 100vw;           /* cover full viewport width */
+  height: 100vh;          /* cover full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent; /* or use rgba(255,255,255,0.8) if you want a dim overlay */
+  z-index: 9999;          /* stay on top of everything */
+}
+
+.spinner {
+  border: 4px solid #ddd;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Sizes */
+.spinner.small {
+  width: 30px;
+  height: 30px;
+  border-width: 3px;
+}
+
+.spinner.medium {
+  width: 50px;
+  height: 50px;
+}
+
+.spinner.large {
+  width: 80px;
+  height: 80px;
+  border-width: 5px;
+}
+
+.loading-text {
+  margin-top: 15px;
+  font-size: 1rem;
+  color: #555;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

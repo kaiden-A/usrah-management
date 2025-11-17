@@ -29,19 +29,15 @@ export const get_dashboard = async (req , res) => {
         const [rowsDashboard] = await db.query(
 
             `
-                SELECT DATE_FORMAT(s.session_date, '%d %b %Y') AS sessions_date  , 
-                    s.session_name ,  COUNT(s.sessions_id) AS present,
-                (
-                    ABS(COUNT(s.sessions_id) - (SELECT COUNT(*) FROM SESSIONS WHERE USRAH_ID = ? ))
-
-                ) AS absent,
-                (
-                    COUNT(s.sessions_id) /( SELECT COUNT(*) FROM SESSIONS WHERE USRAH_ID = ?) 
-                ) * 100 AS percentage_rate FROM members m 
-                JOIN attendance a ON m.members_id = a.members_id JOIN sessions s ON s.sessions_id = a.sessions_id
-                GROUP BY s.session_date , s.session_name;
+                SELECT DATE_FORMAT(s.session_date, '%d %b %Y') AS sessions_date ,
+                s.session_name , COUNT(a.members_id) AS present , 
+                ( SELECT COUNT(*) FROM MEMBERS WHERE usrah_id = ?) - COUNT(a.members_id) AS absent,
+                COUNT(a.members_id)/  ( SELECT COUNT(*) FROM MEMBERS WHERE usrah_id = ?) * 100 AS percentage_rate
+                FROM SESSIONS s LEFT JOIN ATTENDANCE a ON s.SESSIONS_ID = a.SESSIONS_ID
+                WHERE usrah_id = ?
+                GROUP BY DATE_FORMAT(s.session_date, '%d %b %Y') , s.session_name;
             `,
-            [naqib.usrah_id , naqib.usrah_id]
+            [naqib.usrah_id , naqib.usrah_id , naqib.usrah_id]
         )
 
         const totalMembers = rowsMember[0].total_members;
