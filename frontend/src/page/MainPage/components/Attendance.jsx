@@ -20,8 +20,6 @@ function Attendance(){
 
                 const data = await responses.json();
 
-                console.log(data);
-
                 setSessions(data.sessions);
                 setAttend(data.attendance);
                 setOption(data.sessions[0].sessions_id)
@@ -37,10 +35,40 @@ function Attendance(){
     const attendanceArray = useMemo( () => { 
 
         const arr = attend.filter(a => a.sessions_id == option );
-        console.log(arr);
         return arr;
 
     } , [attend , option])
+    
+
+    const attendance = async (id , sign) => {
+
+        try{
+
+            const responses = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendances` , {
+                credentials : 'include',
+                method : `${sign ? 'POST' : 'DELETE'}`,
+                headers : {'Content-type' : 'application/json'},
+                body : JSON.stringify({
+                    sessionId :  option,
+                    memberId : id
+                })
+            })
+
+            const data = await responses.json();
+            console.log(data);
+
+            if(data.success){
+                const updated = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/attendances`, { credentials: 'include' });
+                const jsonData = await updated.json();
+                setAttend(jsonData.attendance);
+            }
+
+
+        }catch(err){
+            console.log(err);
+        }
+
+    }
 
 
     return(
@@ -89,11 +117,18 @@ function Attendance(){
                                             <td>
                                                 {
                                                     a.attended !== null ?  (
-                                                        <button className="btn btn-outline" style={{padding: "0.4rem 0.8rem"}}>
+                                                        <button 
+                                                            className="btn btn-outline" style={{padding: "0.4rem 0.8rem"}}
+                                                            onClick={() => attendance(a.members_id , false)}  
+                                                             
+                                                        >
                                                             Mark Absent
                                                         </button>
                                                     ) : (
-                                                        <button className="btn btn-success" style={{padding: "0.4rem 0.8rem"}}>
+                                                        <button 
+                                                            className="btn btn-success" style={{padding: "0.4rem 0.8rem"}}
+                                                            onClick={() => attendance(a.members_id , true)}  
+                                                        > 
                                                             Mark Present
                                                         </button>  
                                                     ) 
@@ -102,7 +137,7 @@ function Attendance(){
                                         </tr>
                                     )
                                 ) : (
-                                    <tr></tr>
+                                    <tr>No Data</tr>
                                 )
                             }
                         </tbody>

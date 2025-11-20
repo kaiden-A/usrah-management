@@ -1,9 +1,12 @@
 import { Router } from "express";
 import { 
     create_sessions, 
+    delete_attedances, 
+    delete_members, 
     get_attendance, 
     get_dashboard, 
     get_members, 
+    get_sessions, 
     post_members, 
     sign_attendence
 } from "../controllers/userController.js";
@@ -15,10 +18,13 @@ router.get('/dashboard' , get_dashboard);
 
 router.get('/members' , get_members);
 router.post('/members/:id' , post_members);
+router.delete('/members/:id' , delete_members);
 
+router.get('/sessions' , get_sessions)
 router.post('/sessions' , create_sessions);
 
 router.post('/attendances' , sign_attendence);
+router.delete('/attendances' , delete_attedances);
 router.get('/attendances' , get_attendance);
 
 export default router;

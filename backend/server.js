@@ -26,6 +26,11 @@ app.use(cors({
 const db = await connectDb();
 app.locals.db = db;
 
+app.get('/'  , (req , res) => {
+    res.json({success : "opening website"})
+    console.log("Opening website");
+})
+
 app.use('/api' , authRoutes);
 
 app.listen(PORT , () => {console.log("App is listening at PORT " + PORT)})

@@ -15,10 +15,9 @@ function Header({tab , setTab}){
                             <h1>Usrah Management System</h1>
                         </div>
                         <div className="user-info">
-                            <div className="user-avatar">AM</div>
+                            <div className="user-avatar">N</div>
                             <div>
-                                <div id="user-name">Ahmad Malik</div>
-                                <div id="user-role">Admin</div>
+                                <div id="user-role">Nuqaba</div>
                             </div>
                         </div>
                     </div>
@@ -44,10 +43,10 @@ function Header({tab , setTab}){
                         >
                             Attendance
                         </li>
-                        <li className={`${tab === 'Profile' ? 'active' : ''}`}
-                            onClick={() => setTab('Profile')}
+                        <li className={`${tab === 'Sessions' ? 'active' : ''}`}
+                            onClick={() => setTab('Sessions')}
                         >
-                            My Profile
+                            Sessions
                         </li>
                     </ul>
                 </div>
