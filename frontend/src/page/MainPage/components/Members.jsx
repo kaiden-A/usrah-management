@@ -121,6 +121,7 @@ function Members(){
             <AddMembers
                 open={addMem}
                 close={() => setAddMem(!addMem)}
+                setMember={setMembers}
             />
         </>
     )

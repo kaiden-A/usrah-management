@@ -3,6 +3,7 @@ import {
     create_sessions, 
     delete_attedances, 
     delete_members, 
+    delete_sessions, 
     get_attendance, 
     get_dashboard, 
     get_members, 
@@ -22,9 +23,11 @@ router.delete('/members/:id' , delete_members);
 
 router.get('/sessions' , get_sessions)
 router.post('/sessions' , create_sessions);
+router.delete('/sessions/:id' , delete_sessions)
 
+router.get('/attendances' , get_attendance);
 router.post('/attendances' , sign_attendence);
 router.delete('/attendances' , delete_attedances);
-router.get('/attendances' , get_attendance);
+
 
 export default router;

@@ -27,7 +27,28 @@ function Sessions(){
 
         fetchSessions();
 
-    } , [])
+    } , []);
+
+    const deleteSessions = async (id) => {
+
+        try{
+
+            const responses = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/sessions/${id}` , {
+                credentials : 'include',
+                method : 'DELETE',
+            })
+
+            const data = await responses.json();
+            console.log(data);
+
+            if(data.success){
+                setSessions(s => s.filter(item => item.id !== id))
+            }
+
+        }catch(err){
+            console.log(err);
+        }
+    }
 
 
     return(
@@ -57,8 +78,8 @@ function Sessions(){
                                 {
                                     sessions.length > 0 ? (
 
-                                        sessions.map(s => 
-                                            <tr>
+                                        sessions.map((s) => 
+                                            <tr key={s.id}>
                                                 <td>{s.date}</td>
                                                 <td>{s.name}</td>
                                                 <td>{`${s.attendance}/${totalMem}`}</td>
@@ -67,7 +88,9 @@ function Sessions(){
                                                     <button className="btn btn-outline" style={{padding: "0.4rem 0.8rem"}}>
                                                         <i className="fas fa-edit"></i>
                                                     </button>
-                                                    <button className="btn btn-danger" style={{padding: "0.4rem 0.8rem"}}>
+                                                    <button className="btn btn-danger" style={{padding: "0.4rem 0.8rem"}}
+                                                        onClick={() => deleteSessions(s.id)}
+                                                    >
                                                         <i className="fas fa-trash"></i>
                                                     </button>
                                                 </td>
@@ -87,6 +110,7 @@ function Sessions(){
             <CreateSessions
                 open={openSession}
                 close={() => setOpenSession(!openSession)}
+                setSessions={setSessions}
             />
         </>
     )
