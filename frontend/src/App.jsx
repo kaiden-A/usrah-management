@@ -1,4 +1,3 @@
-import Counter from "./counter"
 import Login from "./page/Login/Login";
 import MainPage from "./page/MainPage/MainPage"
 
