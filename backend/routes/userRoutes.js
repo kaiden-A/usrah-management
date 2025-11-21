@@ -15,6 +15,10 @@ import {
 
 const router = Router();
 
+router.get('/' , (req , res) => {
+    res.json({cookies : true , msg : 'have cookies'})
+})
+
 router.get('/dashboard' , get_dashboard);
 
 router.get('/members' , get_members);

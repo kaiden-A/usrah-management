@@ -19,7 +19,7 @@ export const get_dashboard = async (req , res) => {
         const [rowsSession] = await db.query(
             `
                 SELECT COUNT(sessions_id) as total_session
-                FROM sessions
+                FROM SESSIONS
                 WHERE usrah_id = ?
             ` ,
             [naqib.usrah_id]
@@ -241,10 +241,10 @@ export const get_attendance = async (req , res) => {
                     s.sessions_id,
                     s.session_name,
                     a.members_id AS attended
-                FROM members m
-                JOIN sessions s 
+                FROM MEMBERS m
+                JOIN SESSIONS s 
                     ON s.usrah_id = ?
-                LEFT JOIN attendance a 
+                LEFT JOIN ATTENDANCE a 
                     ON a.members_id = m.members_id
                     AND a.sessions_id = s.sessions_id
                 WHERE m.usrah_id = ?
@@ -302,7 +302,7 @@ export const get_sessions = async (req , res) => {
                     s.SESSION_NAME AS "name" ,
                     COUNT(a.MEMBERS_ID) AS attendance
                 FROM SESSIONS s LEFT JOIN ATTENDANCE a ON s.sessions_id = a.sessions_id 
-                WHERE s.USRAH_ID = 100
+                WHERE s.USRAH_ID = ?
                 GROUP BY s.SESSION_DATE , s.SESSION_NAME , s.SESSIONS_ID;
             `,
             [naqib.usrah_id]

@@ -7,11 +7,14 @@ import Sessions from "./components/Sessions";
 import Footer from "../Global/Footer";
 import LoadingSpinner from "../Global/LoadingSpinner";
 
+import {useNavigate} from 'react-router';
 
 function MainPage(){
 
     const [tab , setTab] = useState('Dashboard');
     const [loading , setLoading] = useState(true);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -27,6 +30,7 @@ function MainPage(){
                 if(responses.ok && isMounted){
                     setLoading(false);
                     clearInterval(intervalId);
+                    checkCookies();
                 }
 
 
@@ -35,9 +39,29 @@ function MainPage(){
             }
         }
 
+        const checkCookies = async () => {
+
+            try{
+
+                const responses = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api` , {
+                    credentials : 'include',
+                    method : 'GET'
+                })
+
+                const data = await responses.json()
+
+                if(!data.cookies){
+                    navigate('/login')
+                }
+
+            }catch(err){
+                console.log(err);
+            }
+        }
+
         activateBackend()
         intervalId = setInterval(activateBackend , 2000);
-        
+
         return () => { clearInterval(intervalId); isMounted = false}
     } , [])
 
